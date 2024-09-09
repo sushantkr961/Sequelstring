@@ -25,19 +25,18 @@ const loginUser = async (req, res) => {
     const user = await UserModel.findOne({ username });
     if (!user || !(await user.matchPassword(password))) {
       res.status(400).json({
-        message: "User not found",
+        message: "Invalid credentials",
       });
     }
     const token = jwt.sign(
       {
-        id: user_id,
+        id: user._id,
         role: user.role,
       },
       "sushant1234",
       { expiresIn: "1h" }
     );
-    res.status(201).json({
-      message: "Login Success",
+    res.json({
       token,
     });
   } catch (error) {
